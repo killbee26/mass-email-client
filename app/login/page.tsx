@@ -1,10 +1,34 @@
 // app/login/page.tsx
-
+'use client';
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/ui/Navbar"; // Import Navbar component
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+
+  //state for form inputs
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // To handle any error messages
+  const [success, setSuccess] = useState(false); // To show success message
+
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess(false);
+
+    const payload = {
+      username,
+      password,
+    };
+    console.log(payload);
+    const router = useRouter
+  }
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       <Navbar /> {/* Add Navbar to the page */}
