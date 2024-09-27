@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/ui/Navbar"; // Import Navbar component
 import { useRouter } from "next/navigation";
+import { login } from "../services/auth";
 
 const LoginPage = () => {
 
   //state for form inputs
+  const router = useRouter(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // To handle any error messages
@@ -20,14 +22,22 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
     setSuccess(false);
+    
 
-    const payload = {
-      username,
-      password,
-    };
-    console.log(payload);
-    const router = useRouter
-  }
+    // Call login service
+    const result = await login(username, password);
+
+    if (result.success) {
+      setSuccess(true);
+      // Redirect to dashboard after successful login
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
+    } else {
+      setError(result.message);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
@@ -36,16 +46,20 @@ const LoginPage = () => {
       {/* Centered content below the navbar */}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 mt-20">
         <h2 className="text-2xl font-bold mb-6 text-black">Login</h2>
+        {/* Success Message */}
+        {success && <p className="text-green-500 mb-4">Registration successful!</p>}
 
-        <form>
+        {/* Error Message */}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <Input type="email" placeholder="Enter your email" className="w-full mt-2" />
+            <label className="block text-sm font-medium text-gray-700">Username</label>
+            <Input type="text" placeholder="Enter your username" className="w-full mt-2" value={username} onChange={(e) => setUsername(e.target.value)}/>
           </div>
 
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700">Password</label>
-            <Input type="password" placeholder="Enter your password" className="w-full mt-2" />
+            <Input type="password" placeholder="Enter your password" className="w-full mt-2" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
           <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
