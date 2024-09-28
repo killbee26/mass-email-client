@@ -6,6 +6,7 @@ export type UploadedFile = {
   fileName: string;
   createdAt: string; // or Date, depending on your implementation
   fileURL: string;
+  fileID: string
 }
 
 // Define your columns

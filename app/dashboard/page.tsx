@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useEffect,useState } from 'react';
 import axios from 'axios';
 import useAuthCheck from '../services/authCheck';
+import UploadComponent from './uploadCSV';
 
 
 
@@ -57,7 +58,7 @@ const Dashboard = () => {
               CSV's
             </TabsTrigger>
             <TabsTrigger 
-              value="Upload CSV" 
+              value="upload_csv" 
               className={`${
                 selectedTab === "Upload CSV" ? "bg-accent-foreground text-white" : "bg-transparent text-gray-400"
               } border-b-2 border-transparent`} 
@@ -73,6 +74,11 @@ const Dashboard = () => {
           <TabsContent value="csv_history" className='mt-8 w-full h-full justify-center'>
           
             <CsvUploadContent />
+          
+          </TabsContent>
+          <TabsContent value="upload_csv" className='mt-8 w-full h-full justify-center'>
+          
+            <UploadComponent />
           
           </TabsContent>
         </Tabs>

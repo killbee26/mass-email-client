@@ -60,7 +60,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       pagination: {
-        pageSize: 9, // Set default page size to 10 rows
+        pageSize: 8, // Set default page size to 10 rows
       },
     },
     state: {
@@ -69,84 +69,84 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
+    <div className="overflow-x-auto">
     <div className="flex items-center py-4 space-x-4">
         {/* File name search input */}
         <Input
-          placeholder="Filter Files..."
-          value={(table.getColumn("fileName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("fileName")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+            placeholder="Filter Files..."
+            value={(table.getColumn("fileName")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+                table.getColumn("fileName")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
         />
 
         {/* Date picker for filtering by createdAt */}
-        
-      </div>
-        
-      <div className="rounded-md border bg-card text-foreground ">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-base">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="ml-4">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+        {/* Add Date Picker here if needed */}
     </div>
+
+    <div className="rounded-md border bg-card text-foreground">
+        <Table className="min-w-full">
+            <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                            <TableHead key={header.id} className="text-base">
+                                {header.isPlaceholder
+                                    ? null
+                                    : flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
+                            </TableHead>
+                        ))}
+                    </TableRow>
+                ))}
+            </TableHeader>
+            <TableBody>
+                {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                        <TableRow
+                            key={row.id}
+                            data-state={row.getIsSelected() && "selected"}
+                        >
+                            {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id} className="ml-4">
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                            No results.
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
+    </div>
+
+    <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+        >
+            Previous
+        </Button>
+        <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+        >
+            Next
+        </Button>
+    </div>
+</div>
+
   )
 }

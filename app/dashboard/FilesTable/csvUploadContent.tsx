@@ -16,7 +16,7 @@ const CsvUploadContent = () => {
             if (dateRange.from) query.append('startDate', dateRange.from.toISOString());
             if (dateRange.to) query.append('endDate', dateRange.to.toISOString());
 
-            const response = await fetch(`http://localhost:5000/api/file/userFiles?${query.toString()}`, {
+            const response = await fetch(`http://localhost:5000/api/file/userFilesWithDate?${query.toString()}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const fileData: UploadedFile[] = await response.json();
@@ -37,10 +37,13 @@ const CsvUploadContent = () => {
     }
 
     return (
-        <Card className="bg-background pl-20 pr-20 pb-5 pt-7 mx-auto">
-            <DatePickerWithRange className="mb-4" setDate={setDateRange} />
-            <DataTable columns={fileColumns} data={data} />
-        </Card>
+        <Card className="bg-background p-4 mx-auto">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        <DatePickerWithRange className="w-full md:w-1/2" setDate={setDateRange} />
+    </div>
+    <DataTable columns={fileColumns} data={data} />
+</Card>
+
     );
 };
 
