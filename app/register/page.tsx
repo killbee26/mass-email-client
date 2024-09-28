@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation"; // Import useRouter from Next.js
 import Navbar from "@/components/ui/Navbar"; // Import Navbar component
+import axios from "axios";
+import { register } from "../services/register";
 
 const RegisterPage = () => {
   // State for form inputs
@@ -20,53 +22,30 @@ const RegisterPage = () => {
     setError(""); // Reset error state before submission
     setSuccess(false); // Reset success state before submission
 
-    // Construct the request payload
-    const payload = {
-      email,
-      username,
-      password,
-    };
-    console.log(payload);
-    
+    // Call login service
+    const result = await register(email, username, password);
+    console.log(result);
 
-    try {
-      // Send a POST request to your API
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Send data as JSON
-        },
-        body: JSON.stringify(payload), // Convert payload to JSON
-      });
-
-      console.log(payload);
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Handle successful response
-        setSuccess(true);
-         // Redirect to login page after 2 seconds
-         setTimeout(() => {
-          router.push("/login"); // Use useRouter to navigate to the login page
-        }, 2000); // Optional delay to show success message
-      } else {
-        // Handle error response
-        setError(data.message || "Something went wrong!");
-      }
-    } catch (err) {
-      // Catch any other errors
-      setError("Error submitting the form, please try again.");
+    if (result.success) {
+      setSuccess(true);
+      
+      // Redirect to dashboard after successful login
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } else {
+      setError(result.message);
     }
+   
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <Navbar /> {/* Add Navbar to the page */}
 
       {/* Centered content below the navbar */}
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 mt-20">
-        <h2 className="text-2xl font-bold mb-6 text-black">Register</h2>
+      <div className="w-full max-w-md bg-background rounded-lg shadow-md p-6 mt-20">
+        <h2 className="text-2xl font-bold mb-6 text-foreground">Register</h2>
 
         {/* Success Message */}
         {success && <p className="text-green-500 mb-4">Registration successful!</p>}

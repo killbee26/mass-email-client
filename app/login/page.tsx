@@ -40,7 +40,7 @@ const LoginPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <Navbar /> {/* Add Navbar to the page */}
 
       {/* Centered content below the navbar */}
@@ -62,7 +62,7 @@ const LoginPage = () => {
             <Input type="password" placeholder="Enter your password" className="w-full mt-2" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
-          <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
+          <Button type="submit" className="w-full text-white hover:bg-muted-foreground">
             Sign In
           </Button>
         </form>

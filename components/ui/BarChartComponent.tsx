@@ -34,19 +34,19 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-3))",
   },
   mobile: {
     label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 
 export default function BarChartComponent() {
   return (
-    <Card className="w-full max-w-2xl mx-auto border-rounded bg-slate-900">
+    <Card className="w-full max-w-2xl mx-auto border-rounded bg-background">
       <CardHeader>
-        <CardTitle className="text-white">Bar Chart - Stacked + Legend</CardTitle>
+        <CardTitle className="text-card-foreground">Bar Chart - Stacked + Legend</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
@@ -78,10 +78,10 @@ export default function BarChartComponent() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none text-white">
+        <div className="flex gap-2 font-medium leading-none text-card-foreground">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground text-white">
+        <div className="leading-none text-card-foreground">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

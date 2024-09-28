@@ -28,7 +28,7 @@ export default function ChartComponent() {
   return (
     <ChartContainer config={chartConfig} className="w-full max-w-2xl mx-auto">
       <BarChart accessibilityLayer data={chartData}>
-        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="desktop" fill="var(--chart2)" radius={4} />
         <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
       </BarChart>
     </ChartContainer>
