@@ -27,15 +27,16 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  pageSize?: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pageSize=8,
 }: DataTableProps<TData, TValue>) {
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-      )
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+
 
     //Select Date state manage
     const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(undefined);
@@ -60,7 +61,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       pagination: {
-        pageSize: 8, // Set default page size to 10 rows
+        pageSize: pageSize, // Set default page size to 10 rows
       },
     },
     state: {

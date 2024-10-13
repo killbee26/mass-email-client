@@ -13,12 +13,17 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "./FilesTable/FileTable"; // Adjust path as necessary
 import { UploadedFile } from "./FilesTable/column"; // Adjust path as necessary
+import { MailCompose } from "./mailCompose";
 
 const UploadComponent = () => {
   const [data, setData] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]); // Store selected file IDs
-
+  const [emailData, setEmailData] = useState({
+    sender: "",
+    subject: "",
+    body: "",
+  }); // Store email details
   useEffect(() => {
     const fetchFiles = async () => {
         const token = localStorage.getItem("token");
@@ -76,15 +81,31 @@ const UploadComponent = () => {
     });
   };
 
+ 
+  // Handle combined submission of email data and file IDs
   const handleSendEmails = async () => {
     const token = localStorage.getItem("token");
+
+    // Ensure both email data and files are selected
+    if (!emailData.sender || !emailData.subject || !emailData.body || selectedFiles.length === 0) {
+      alert("Please fill in all email fields and select at least one file.");
+      return;
+    }
+
     const response = await fetch("http://localhost:5000/api/file/sendEmailsToAws", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ fileIds: selectedFiles }),
+      body: JSON.stringify({
+        emailData: {
+          sender: emailData.sender,
+          subject: emailData.subject,
+          body: emailData.body,
+        },
+        fileIds: selectedFiles,
+      }),
     });
 
     if (response.ok) {
@@ -98,6 +119,8 @@ const UploadComponent = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  
 
   const columns = [
     {
@@ -116,7 +139,20 @@ const UploadComponent = () => {
   ];
 
   return (
-    <Card className="w-full md:w-[50%] ">
+    <div className="flex flex-row w-full">
+
+    {/* <Card className="ml-2 w-full"> */}
+    <MailCompose
+      senderAddress={emailData.sender}
+      defaultSubject={emailData.subject}
+      defaultBody={emailData.body}
+      onSend={(sender, subject, body) => {
+        console.log("Email sent:", sender, subject, body)
+        setEmailData({ sender, subject, body });
+      }}
+    />
+    {/* </Card> */}
+    <Card className="w-full md:max-w-[50%] ml-14">
       <CardHeader>
         <CardTitle>Files</CardTitle>
         <CardDescription>
@@ -124,15 +160,16 @@ const UploadComponent = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} pageSize={5} />
       </CardContent>
       <CardFooter className="justify-between border-t p-4">
         <Button size="sm" variant="ghost" className="gap-1" onClick={handleSendEmails}>
-          <PlusCircle className="h-3.5 w-3.5" />
+          <PlusCircle className="h-3.5 w-3.5 " />
           Send Emails
         </Button>
       </CardFooter>
     </Card>
+    </div>
   );
 };
 
