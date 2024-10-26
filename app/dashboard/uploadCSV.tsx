@@ -99,11 +99,9 @@ const UploadComponent = () => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        emailData: {
-          sender: emailData.sender,
-          subject: emailData.subject,
-          body: emailData.body,
-        },
+        sender: emailData.sender,
+        subject: emailData.subject,
+        body: emailData.body,
         fileIds: selectedFiles,
       }),
     });
@@ -130,7 +128,7 @@ const UploadComponent = () => {
     {
       accessorKey: "fileId", // Accessor key for the file ID
       header: "Select",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: any }) => (
         <Button onClick={() => handleSelectFile(row.original.fileID)}>
           {selectedFiles.includes(row.original.fileID) ? "Deselect" : "Select"}
         </Button>

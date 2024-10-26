@@ -39,7 +39,7 @@ const CsvUploadContent = () => {
     return (
         <Card className="bg-background p-4 mx-auto">
     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-        <DatePickerWithRange className="w-full md:w-1/2" setDate={setDateRange} />
+        <DatePickerWithRange className="w-full md:w-1/2" setDate={(range) => setDateRange(range as { from?: Date; to?: Date })} />
     </div>
     <DataTable columns={fileColumns} data={data} />
 </Card>
