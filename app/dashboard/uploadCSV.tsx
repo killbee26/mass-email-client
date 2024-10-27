@@ -14,6 +14,7 @@ import {
 import { DataTable } from "./FilesTable/FileTable"; // Adjust path as necessary
 import { UploadedFile } from "./FilesTable/column"; // Adjust path as necessary
 import { MailCompose } from "./mailCompose";
+import api from "../utils/api";
 
 const UploadComponent = () => {
   const [data, setData] = useState<UploadedFile[]>([]);
@@ -26,37 +27,31 @@ const UploadComponent = () => {
   }); // Store email details
   useEffect(() => {
     const fetchFiles = async () => {
-        const token = localStorage.getItem("token");
-        try {
-          const response = await fetch("http://localhost:5000/api/file/getUserFiles", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          
-          // Log the raw response and check if it's ok
-          console.log("Response status:", response.status);
-          
-          // Check if response is OK
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          
-          // Parse the JSON response
-          const fileData: UploadedFile[] = await response.json();
-      
-          // Log the file data before setting the state
-          console.log("File data received:", fileData);
-          
-          // Set the data state
-          setData(fileData);
-        } catch (error) {
-          console.error("Error fetching files:", error);
-        } finally {
-          setLoading(false);
+      try {
+        const response = await api.get("/file/getUserFiles");
+        
+        // Log the response status
+        console.log("Response status:", response.status);
+  
+        // Check if response is OK
+        if (response.status !== 200) {
+          throw new Error("Network response was not ok");
         }
-      };
-
+        
+        // Set the data state with the response data
+        const fileData: UploadedFile[] = response.data;
+        console.log("File data received:", fileData);
+        setData(fileData);
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
     fetchFiles();
   }, []);
+  
 
   useEffect(() => {
     console.log("Data updated:", data);
@@ -84,35 +79,30 @@ const UploadComponent = () => {
  
   // Handle combined submission of email data and file IDs
   const handleSendEmails = async () => {
-    const token = localStorage.getItem("token");
-
     // Ensure both email data and files are selected
     if (!emailData.sender || !emailData.subject || !emailData.body || selectedFiles.length === 0) {
       alert("Please fill in all email fields and select at least one file.");
       return;
     }
-
-    const response = await fetch("http://localhost:5000/api/file/sendEmailsToAws", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+  
+    try {
+      const response = await api.post("/file/sendEmailsToAws", {
         sender: emailData.sender,
         subject: emailData.subject,
         body: emailData.body,
         fileIds: selectedFiles,
-      }),
-    });
-
-    if (response.ok) {
-      alert("Emails sent successfully!");
-      setSelectedFiles([]); // Clear selection after sending
-    } else {
+      });
+  
+      if (response.status === 200) {
+        alert("Emails sent successfully!");
+        setSelectedFiles([]); // Clear selection after sending
+      }
+    } catch (error) {
+      console.error("Error sending emails:", error);
       alert("Error sending emails. Please try again.");
     }
   };
+  
 
   if (loading) {
     return <div>Loading...</div>;

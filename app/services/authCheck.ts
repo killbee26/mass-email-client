@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import api from '../utils/api';
 
 const useAuthCheck = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,8 +18,8 @@ const useAuthCheck = () => {
             }
 
             try {
-                const response = await axios.get('http://localhost:5000/api/auth/verifyToken', {
-                    headers: { Authorization: `Bearer ${token}` }
+                const response = await api.get('/auth/verifyToken', {
+                   
                 });
                 if (response.data.valid) {
                     setIsAuthenticated(true);  // User is authenticated

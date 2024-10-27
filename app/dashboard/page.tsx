@@ -4,12 +4,15 @@ import DashNavbar from '@/components/ui/DashNavbar';
 import ChartComponent from '@/components/ui/ChartComponent';
 import CsvUploadContent from './FilesTable/csvUploadContent';
 import AnalyticsContent from './analyticsContent';
+import UploadFiles from './uploadFiles'
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useEffect,useState } from 'react';
 import axios from 'axios';
 import useAuthCheck from '../services/authCheck';
 import UploadComponent from './uploadCSV';
+
+
 
 
 
@@ -58,11 +61,20 @@ const Dashboard = () => {
               CSV's
             </TabsTrigger>
             <TabsTrigger 
-              value="upload_csv" 
+              value="sendEmails" 
               className={`${
-                selectedTab === "Upload CSV" ? "bg-accent-foreground text-white" : "bg-transparent text-gray-400"
+                selectedTab === "Send Emails" ? "bg-accent-foreground text-white" : "bg-transparent text-gray-400"
               } border-b-2 border-transparent`} 
-              onClick={() => setSelectedTab("Upload CSV")}
+              onClick={() => setSelectedTab("Send Emails")}
+            >
+              Send Emails
+            </TabsTrigger>
+            <TabsTrigger 
+              value="uploadcsv" 
+              className={`${
+                selectedTab === "uploadcsv" ? "bg-accent-foreground text-white" : "bg-transparent text-gray-400"
+              } border-b-2 border-transparent`} 
+              onClick={() => setSelectedTab("uploadcsv")}
             >
               Upload CSV
             </TabsTrigger>
@@ -76,9 +88,14 @@ const Dashboard = () => {
             <CsvUploadContent />
           
           </TabsContent>
-          <TabsContent value="upload_csv" className='mt-8 w-full h-full justify-center'>
+          <TabsContent value="sendEmails" className='mt-8 w-full h-full justify-center'>
           
             <UploadComponent />
+          
+          </TabsContent>
+          <TabsContent value="uploadcsv" className='mt-8 w-full h-full justify-center'>
+          
+           <UploadFiles />
           
           </TabsContent>
         </Tabs>

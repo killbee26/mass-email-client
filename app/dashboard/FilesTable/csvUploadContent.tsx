@@ -3,6 +3,7 @@ import { DataTable } from "./FileTable"; // Adjust the path as necessary
 import { fileColumns, UploadedFile } from "./column"; // Adjust the path as necessary
 import { Card } from '@/components/ui/card';
 import { DatePickerWithRange } from '@/components/ui/DatePickerWithRange'; // Adjust the import path as necessary
+import api from "@/app/utils/api";
 
 const CsvUploadContent = () => {
     const [data, setData] = useState<UploadedFile[]>([]);
@@ -11,26 +12,36 @@ const CsvUploadContent = () => {
 
     useEffect(() => {
         const fetchFiles = async () => {
-            const token = localStorage.getItem("token");
-            const query = new URLSearchParams();
-            if (dateRange.from) query.append('startDate', dateRange.from.toISOString());
-            if (dateRange.to) query.append('endDate', dateRange.to.toISOString());
-
-            const response = await fetch(`http://localhost:5000/api/file/userFilesWithDate?${query.toString()}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            const fileData: UploadedFile[] = await response.json();
-            console.log('Fetched Data:', fileData);
+          try {
+            // Construct query parameters for date range
+            const queryParams = new URLSearchParams();
+            if (dateRange.from) queryParams.append("startDate", dateRange.from.toISOString());
+            if (dateRange.to) queryParams.append("endDate", dateRange.to.toISOString());
+      
+            // Send GET request with query params
+            const response = await api.get(`/file/userFilesWithDate?${queryParams.toString()}`);
+            
+            // Extract file data from response
+            const fileData: UploadedFile[] = response.data;
+            console.log("Fetched Data:", fileData);
+      
+            // Log start and end dates for reference
             const startDate = dateRange.from?.toISOString();
-            const endDate  = dateRange.to?.toISOString();
+            const endDate = dateRange.to?.toISOString();
             console.log(`Start Date: ${startDate}, End Date: ${endDate}`);
-
+      
+            // Update state with the fetched data
             setData(fileData);
+          } catch (error) {
+            console.error("Error fetching files:", error);
+          } finally {
             setLoading(false);
+          }
         };
-
+      
         fetchFiles();
-    }, [dateRange]);
+      }, [dateRange]);
+      
 
     if (loading) {
         return <div>Loading...</div>;
