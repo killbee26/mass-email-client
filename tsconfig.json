@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "typeRoots": [
-      "./node_modules/@types", // Specify the path correctly
-      "./node_modules/@shadcn/ui"
+      "./node_modules/@types" // Specify the path correctly
     ],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
