@@ -17,7 +17,7 @@ import UploadComponent from './uploadCSV';
 
 
 const Dashboard = () => {
-  const [selectedTab, setSelectedTab] = useState("Analytics");
+  const [selectedTab, setSelectedTab] = useState("csv_history");
   const [data, setData] = useState(null);
  
  
@@ -40,17 +40,9 @@ const Dashboard = () => {
       <DashNavbar />
       <div className="p-6">
         <h2 className="text-4xl font-bold mb-6">Dashboard</h2>
-        <Tabs defaultValue="Analytics" className="w-full">
+        <Tabs defaultValue="csv_history" className="w-full">
           <TabsList className='bg-accent '>
-            <TabsTrigger 
-              value="Analytics" 
-              className={`${
-                selectedTab === "Analytics" ? "bg-accent-foreground text-white" : "bg-transparent text-gray-400"
-              } border-b-2 border-transparent`} 
-              onClick={() => setSelectedTab("Analytics")}
-            >
-              Analytics
-            </TabsTrigger>
+            
             <TabsTrigger 
               value="csv_history" 
               className={`${
@@ -80,9 +72,7 @@ const Dashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="Analytics" className='mt-8 w-full h-full'>
-            <AnalyticsContent />
-          </TabsContent>
+          
           <TabsContent value="csv_history" className='mt-8 w-full h-full justify-center'>
           
             <CsvUploadContent />
