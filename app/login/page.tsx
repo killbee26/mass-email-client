@@ -47,7 +47,7 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 mt-20">
         <h2 className="text-2xl font-bold mb-6 text-black">Login</h2>
         {/* Success Message */}
-        {success && <p className="text-green-500 mb-4">Registration successful!</p>}
+        {success && <p className="text-green-500 mb-4">Login successful!</p>}
 
         {/* Error Message */}
         {error && <p className="text-red-500 mb-4">{error}</p>}

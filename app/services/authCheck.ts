@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import api from '../utils/api';
+import { getToken } from '../utils/token';
+
 
 const useAuthCheck = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,7 +13,8 @@ const useAuthCheck = () => {
 
     useEffect(() => {
         const checkToken = async () => {
-            const token = localStorage.getItem('token');
+            const token = getToken();
+            console.log(token);
             if (!token) {
                 router.push('/login');  // If no token, redirect to login
                 return;

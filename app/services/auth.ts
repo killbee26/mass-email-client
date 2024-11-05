@@ -12,6 +12,7 @@ export const login = async (username: string, password: string) => {
     if (response.status === 200) {
       // Store JWT in localStorage
       setToken(response.data.token); // Assuming setToken is a function defined to store the token
+      console.log("Token is set");
       return { success: true, response };
     } else {
       return { success: false, message: response.data.message || "Login failed" };
